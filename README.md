@@ -43,7 +43,9 @@ A full-stack application built with Next.js frontend and NestJS backend, impleme
    npm run start:dev
    ```
 
-The backend server will start on http://localhost:3001 ✨
+The backend server will start on http://localhost:3001.
+
+> API documentation can be found on http://localhost:3001/api
 
 ### Frontend Setup
 
@@ -71,7 +73,7 @@ The backend server will start on http://localhost:3001 ✨
    npm run dev
    ```
 
-The frontend application will be available at http://localhost:3000 🌟
+The frontend application will be available at http://localhost:3000
 
 ## 📜 Available Scripts
 
