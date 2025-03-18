@@ -7,11 +7,13 @@ import { UserModule } from './user/user.module';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
     // eslint-disable-next-line
     ConfigModule.forRoot(),
+    EventEmitterModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_URI ?? 'mongodb://localhost/nest'),
     UserModule,
     AuthModule,

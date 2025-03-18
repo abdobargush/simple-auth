@@ -10,12 +10,16 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/user.schema';
 import { TokenResponse } from 'src/types';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { UserRegisteredEvent } from './events/user-registered.event';
+import { UserLoggedInEvent } from './events/user-loggedin.event';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async login({ email, password }: LoginDto): Promise<TokenResponse> {
@@ -27,7 +31,11 @@ export class AuthService {
     if (!isPasswordMathced)
       throw new UnauthorizedException('Invalid email or password');
 
-    return this.generateToken(user);
+    const response = this.generateToken(user);
+
+    this.eventEmitter.emit('user.loggedin', new UserLoggedInEvent(user));
+
+    return response;
   }
 
   async register(data: CreateUserDto): Promise<TokenResponse> {
@@ -41,7 +49,11 @@ export class AuthService {
       password: hashedPassword,
     } as User);
 
-    return this.generateToken(user);
+    const response = this.generateToken(user);
+
+    this.eventEmitter.emit('user.registered', new UserRegisteredEvent(user));
+
+    return response;
   }
 
   private generateToken(user: User): TokenResponse {
